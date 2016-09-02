@@ -21,17 +21,29 @@ gulp.task('html', function () {
 });
 
 gulp.task('css', function () {
-  return gulp.src(['node_modules/patternfly-sass/assets/stylesheets/_patternfly.scss'])
-    .pipe($.sass().on('error', $.sass.logError))
+  return gulp.src(['node_modules/patternfly/less/patternfly.less',
+    'node_modules/patternfly/less/patternfly-additions.less'])
+    .pipe($.plumber())
+    .pipe($.less())
     .pipe($.autoprefixer("last 3 versions", "> 1%"))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/css'));
 });
 
-gulp.task('vulcanize', function () {
+gulp.task('vulcanize', ['html'], function () {
   return gulp.src('dist/pf-tabs.local.html')
     .pipe($.vulcanize({dest: 'dist', inline: true}))
     .pipe($.rename('pf-tabs.html'))
     .pipe(gulp.dest('dist'));
+});
+
+gulp.task('img', function(){
+  return gulp.src(['./node_modules/patternfly/dist/img/*.*'])
+    .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('fonts', function(){
+  return gulp.src(['./node_modules/patternfly/dist/fonts/*.*'])
+    .pipe(gulp.dest('dist/fonts'));
 });
 
 gulp.task('copy', function () {
@@ -41,7 +53,7 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['js', 'html', 'css', 'copy', 'vulcanize']);
+gulp.task('build', ['js', 'html', 'css', 'copy', 'img', 'fonts', 'vulcanize']);
 
 gulp.task('serve', function(){
   browserSync.init({
