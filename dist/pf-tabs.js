@@ -1,1 +1,260 @@
-"use strict";function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function _inherits(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}var _createClass=function(){function t(t,e){for(var a=0;a<e.length;a++){var i=e[a];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(t,i.key,i)}}return function(e,a,i){return a&&t(e.prototype,a),i&&t(e,i),e}}();!function(){function t(t,e){window.ShadowDOMPolyfill&&WebComponents.ShadowCSS.shimStyling(t,e)}var e=(document._currentScript||document.currentScript).ownerDocument,a=e.querySelector(".tabs-template"),i=e.querySelector(".tab-template"),n=e.querySelector(".panel-template"),o=Array.prototype.forEach;t(a.content,"pf-tabs"),t(n.content,"pf-tab");var r=function(t){function e(){return _classCallCheck(this,e),_possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return _inherits(e,t),_createClass(e,[{key:"attachedCallback",value:function(){this.createShadowRoot(),this.shadowRoot.appendChild(document.importNode(n.content,!0))}},{key:"attributeChangedCallback",value:function(t,e,a){var i=this.parentNode;"title"===t&&i.handleTitle(this,a)}},{key:"title",get:function(){return this._title},set:function(t){this._title!==t&&(this._title=t,this.setAttribute("title",t))}},{key:"active",get:function(){return this._active},set:function(t){this._active!==t&&(this._active=t,this.setAttribute("active",t))}}]),e}(HTMLElement),s=function(t){function e(){return _classCallCheck(this,e),_possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).apply(this,arguments))}return _inherits(e,t),_createClass(e,[{key:"createdCallback",value:function(){this.selected=null,this.tabMap=new Map,this.panelMap=new WeakMap,this.displayMap=new WeakMap}},{key:"attachedCallback",value:function(){this.createShadowRoot(),this.shadowRoot.appendChild(document.importNode(a.content,!0)),this.makeTabsFromPfTab(),this.shadowRoot.querySelector("ul").addEventListener("click",this),this.mutationObserver||(this.mutationObserver=new MutationObserver(this.handleMutations.bind(this)),this.mutationObserver.observe(this,{childList:!0}))}},{key:"detachedCallback",value:function(){this.shadowRoot.querySelector("ul").removeEventListener("click",this)}},{key:"handleEvent",value:function(t){"BUTTON"===t.target.tagName&&this.setTabStatus(t.target.parentNode)}},{key:"handleMutations",value:function(t){var e=this,a=[];t.forEach(function(t){o.call(t.addedNodes,function(t){a.push(["add",t])}),o.call(t.removedNodes,function(t){a.push(["remove",t])})}),a.length&&requestAnimationFrame(function(){var t=e.shadowRoot.querySelector("ul");a.forEach(function(a){var i,n=a[0],o=a[1];if("PF-TAB"===o.nodeName)if("add"===n)i=e.makeTab(o),e.tabMap.set(i,o),e.panelMap.set(o,i),o.attributes.active?e.tabMap.forEach(function(t,a){var n=i===a?e.makeActive:e.makeInactive;n.call(e,a)}):e.makeInactive(i),t.appendChild(i);else if(i=e.panelMap.get(o),i.parentNode.removeChild(i),e.panelMap.delete(o),e.tabMap.delete(i),e.displayMap.delete(i),o.attributes.active){var r=t.querySelector("li:last-child");e.setTabStatus(r)}})})}},{key:"handleTitle",value:function(t,e){var a=this.panelMap.get(t);a&&(a.textContent=t.title)}},{key:"makeTabsFromPfTab",value:function(){var t=this.shadowRoot.querySelector("ul"),e=this.querySelectorAll("pf-tab");[].forEach.call(e,function(e,a){var i=this.makeTab(e);t.appendChild(i),this.tabMap.set(i,e),this.panelMap.set(e,i),0===a?this.makeActive(i):e.style.display="none"}.bind(this))}},{key:"makeTab",value:function(t){var e=document.importNode(i.content,!0),a=e.firstElementChild,n=a.firstElementChild;return n.textContent=t.title,this.displayMap.set(t,t.style.display),a}},{key:"makeActive",value:function(t){t.classList.add("active");var e=this.tabMap.get(t),a=this.displayMap.get(e);e.style.display=a,e.setAttribute("active","")}},{key:"makeInactive",value:function(t){t.classList.remove("active");var e=this.tabMap.get(t);e.style.display="none",e.removeAttribute("active")}},{key:"setTabStatus",value:function(t){if(t!==this.selected){this.selected=t;var e=this.shadowRoot.querySelector("ul").children;[].forEach.call(e,function(e){var a=t===e?this.makeActive:this.makeInactive;a.call(this,e)}.bind(this))}}}]),e}(HTMLElement);document.registerElement("pf-tab",r),document.registerElement("pf-tabs",s)}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+(function () {
+  var doc = (document._currentScript || document.currentScript).ownerDocument;
+  var tabsTemplate = doc.querySelector('.tabs-template');
+  var tabTemplate = doc.querySelector('.tab-template');
+  var panelTemplate = doc.querySelector('.panel-template');
+  var forEach = Array.prototype.forEach;
+
+  shimStyles(tabsTemplate.content, 'pf-tabs');
+  shimStyles(panelTemplate.content, 'pf-tab');
+
+  function shimStyles(root, name) {
+    if (window.ShadowDOMPolyfill) {
+      WebComponents.ShadowCSS.shimStyling(root, name);
+    }
+  }
+
+  //PfTab Custom Element
+
+  var PfTab = function (_HTMLElement) {
+    _inherits(PfTab, _HTMLElement);
+
+    function PfTab() {
+      _classCallCheck(this, PfTab);
+
+      return _possibleConstructorReturn(this, (PfTab.__proto__ || Object.getPrototypeOf(PfTab)).apply(this, arguments));
+    }
+
+    _createClass(PfTab, [{
+      key: 'attachedCallback',
+      value: function attachedCallback() {
+        this.createShadowRoot();
+        this.shadowRoot.appendChild(document.importNode(panelTemplate.content, true));
+      }
+    }, {
+      key: 'attributeChangedCallback',
+      value: function attributeChangedCallback(attributeName, oldValue, newValue) {
+        var parent = this.parentNode;
+        if (attributeName === 'title') {
+          parent.handleTitle(this, newValue);
+        }
+      }
+    }, {
+      key: 'title',
+      get: function get() {
+        return this._title;
+      },
+      set: function set(value) {
+        if (this._title !== value) {
+          this._title = value;
+          this.setAttribute('title', value);
+        }
+      }
+    }, {
+      key: 'active',
+      get: function get() {
+        return this._active;
+      },
+      set: function set(value) {
+        if (this._active !== value) {
+          this._active = value;
+          this.setAttribute('active', value);
+        }
+      }
+    }]);
+
+    return PfTab;
+  }(HTMLElement);
+
+  //PfTabs Custom Element
+
+
+  var PfTabs = function (_HTMLElement2) {
+    _inherits(PfTabs, _HTMLElement2);
+
+    function PfTabs() {
+      _classCallCheck(this, PfTabs);
+
+      return _possibleConstructorReturn(this, (PfTabs.__proto__ || Object.getPrototypeOf(PfTabs)).apply(this, arguments));
+    }
+
+    _createClass(PfTabs, [{
+      key: 'createdCallback',
+      value: function createdCallback() {
+        this.selected = null;
+        this.tabMap = new Map();
+        this.panelMap = new WeakMap();
+        this.displayMap = new WeakMap();
+      }
+    }, {
+      key: 'attachedCallback',
+      value: function attachedCallback() {
+        this.createShadowRoot();
+        this.shadowRoot.appendChild(document.importNode(tabsTemplate.content, true));
+
+        this.makeTabsFromPfTab();
+
+        this.shadowRoot.querySelector('ul').addEventListener('click', this);
+
+        if (!this.mutationObserver) {
+          this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));
+          this.mutationObserver.observe(this, { childList: true });
+        }
+      }
+    }, {
+      key: 'detachedCallback',
+      value: function detachedCallback() {
+        this.shadowRoot.querySelector('ul').removeEventListener('click', this);
+      }
+    }, {
+      key: 'handleEvent',
+      value: function handleEvent(ev) {
+        if (ev.target.tagName === 'BUTTON') {
+          this.setTabStatus(ev.target.parentNode);
+        }
+      }
+    }, {
+      key: 'handleMutations',
+      value: function handleMutations(mutations) {
+        var pfTabs = this;
+        var handlers = [];
+        mutations.forEach(function (mutationRecord) {
+          forEach.call(mutationRecord.addedNodes, function (node) {
+            handlers.push(['add', node]);
+          });
+          forEach.call(mutationRecord.removedNodes, function (node) {
+            handlers.push(['remove', node]);
+          });
+        });
+        if (handlers.length) {
+          requestAnimationFrame(function () {
+            var ul = pfTabs.shadowRoot.querySelector('ul');
+            handlers.forEach(function (notes) {
+              var action = notes[0];
+              var pfTab = notes[1];
+              var tab;
+
+              //ignore Angular directive #text and #comment nodes
+              if (pfTab.nodeName !== "PF-TAB") {
+                return;
+              }
+
+              if (action === 'add') {
+                //add tab
+                tab = pfTabs.makeTab(pfTab);
+                pfTabs.tabMap.set(tab, pfTab);
+                pfTabs.panelMap.set(pfTab, tab);
+
+                //if active, deactivate others
+                if (pfTab.attributes.active) {
+                  pfTabs.tabMap.forEach(function (value, key) {
+                    var fn = tab === key ? pfTabs.makeActive : pfTabs.makeInactive;
+                    fn.call(pfTabs, key);
+                  });
+                } else {
+                  pfTabs.makeInactive(tab);
+                }
+                ul.appendChild(tab);
+              } else {
+                //remove tab
+                tab = pfTabs.panelMap.get(pfTab);
+                tab.parentNode.removeChild(tab);
+                pfTabs.panelMap.delete(pfTab);
+                pfTabs.tabMap.delete(tab);
+                pfTabs.displayMap.delete(tab);
+
+                //we removed the active tab, make the last one active
+                if (pfTab.attributes.active) {
+                  var last = ul.querySelector('li:last-child');
+                  pfTabs.setTabStatus(last);
+                }
+              }
+            });
+          });
+        }
+      }
+    }, {
+      key: 'handleTitle',
+      value: function handleTitle(panel, title) {
+        var tab = this.panelMap.get(panel);
+        //attribute changes may fire as Angular is rendering
+        //before this tab is in the panelMap, so check first
+        if (tab) {
+          tab.textContent = panel.title;
+        }
+      }
+    }, {
+      key: 'makeTabsFromPfTab',
+      value: function makeTabsFromPfTab() {
+        var ul = this.shadowRoot.querySelector('ul');
+        var pfTabs = this.querySelectorAll('pf-tab');
+        [].forEach.call(pfTabs, function (pfTab, idx) {
+          var tab = this.makeTab(pfTab);
+          ul.appendChild(tab);
+          this.tabMap.set(tab, pfTab);
+          this.panelMap.set(pfTab, tab);
+
+          if (idx === 0) {
+            this.makeActive(tab);
+          } else {
+            pfTab.style.display = 'none';
+          }
+        }.bind(this));
+      }
+    }, {
+      key: 'makeTab',
+      value: function makeTab(pfTab) {
+        var frag = document.importNode(tabTemplate.content, true);
+        var tab = frag.firstElementChild;
+        var button = tab.firstElementChild;
+        button.textContent = pfTab.title;
+        this.displayMap.set(pfTab, pfTab.style.display);
+        return tab;
+      }
+    }, {
+      key: 'makeActive',
+      value: function makeActive(tab) {
+        tab.classList.add('active');
+        var pfTab = this.tabMap.get(tab);
+        var naturalDisplay = this.displayMap.get(pfTab);
+        pfTab.style.display = naturalDisplay;
+        pfTab.setAttribute('active', '');
+      }
+    }, {
+      key: 'makeInactive',
+      value: function makeInactive(tab) {
+        tab.classList.remove('active');
+        var pfTab = this.tabMap.get(tab);
+        pfTab.style.display = 'none';
+        pfTab.removeAttribute('active');
+      }
+    }, {
+      key: 'setTabStatus',
+      value: function setTabStatus(active) {
+        if (active === this.selected) return;
+        this.selected = active;
+
+        var tabs = this.shadowRoot.querySelector('ul').children;
+        [].forEach.call(tabs, function (tab) {
+          var fn = active === tab ? this.makeActive : this.makeInactive;
+          fn.call(this, tab);
+        }.bind(this));
+      }
+    }]);
+
+    return PfTabs;
+  }(HTMLElement);
+
+  document.registerElement('pf-tab', PfTab);
+  document.registerElement('pf-tabs', PfTabs);
+})();
