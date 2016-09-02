@@ -68,7 +68,7 @@
       // this.shadowRoot.appendChild(
       // document.importNode(tabsTemplate.content, true);
       // );
-      this.appendChild(document.importNode(tabsTemplate.content, true));
+      this.insertBefore(document.importNode(tabsTemplate.content, true), this.firstChild);
 
       this.makeTabsFromPfTab();
 
@@ -87,7 +87,7 @@
     }
 
     handleEvent(ev) {
-      if(ev.target.tagName === 'BUTTON') {
+      if(ev.target.tagName === 'A') {
         this.setTabStatus(ev.target.parentNode);
       }
     }
@@ -182,8 +182,8 @@
     makeTab(pfTab) {
       var frag = document.importNode(tabTemplate.content, true);
       var tab = frag.firstElementChild;
-      var button = tab.firstElementChild;
-      button.textContent = pfTab.title;
+      var tabAnchor = tab.firstElementChild;
+      tabAnchor.innerHTML = pfTab.title;
       this.displayMap.set(pfTab, pfTab.style.display);
       return tab;
     }

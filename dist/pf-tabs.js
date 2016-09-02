@@ -106,7 +106,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         // this.shadowRoot.appendChild(
         // document.importNode(tabsTemplate.content, true);
         // );
-        this.appendChild(document.importNode(tabsTemplate.content, true));
+        this.insertBefore(document.importNode(tabsTemplate.content, true), this.firstChild);
 
         this.makeTabsFromPfTab();
 
@@ -127,7 +127,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     }, {
       key: 'handleEvent',
       value: function handleEvent(ev) {
-        if (ev.target.tagName === 'BUTTON') {
+        if (ev.target.tagName === 'A') {
           this.setTabStatus(ev.target.parentNode);
         }
       }
@@ -226,8 +226,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
       value: function makeTab(pfTab) {
         var frag = document.importNode(tabTemplate.content, true);
         var tab = frag.firstElementChild;
-        var button = tab.firstElementChild;
-        button.textContent = pfTab.title;
+        var tabAnchor = tab.firstElementChild;
+        tabAnchor.innerHTML = pfTab.title;
         this.displayMap.set(pfTab, pfTab.style.display);
         return tab;
       }
