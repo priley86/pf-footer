@@ -15,14 +15,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
   var panelTemplate = doc.querySelector('.panel-template');
   var forEach = Array.prototype.forEach;
 
-  shimStyles(tabsTemplate.content, 'pf-tabs');
-  shimStyles(panelTemplate.content, 'pf-tab');
-
-  function shimStyles(root, name) {
-    if (window.ShadowDOMPolyfill) {
-      WebComponents.ShadowCSS.shimStyling(root, name);
-    }
-  }
+  // shimStyles(tabsTemplate.content, 'pf-tabs');
+  // shimStyles(panelTemplate.content, 'pf-tab');
+  //
+  // function shimStyles(root, name) {
+  //   if (window.ShadowDOMPolyfill) {
+  //     WebComponents.ShadowCSS.shimStyling(root, name);
+  //   }
+  // }
 
   //PfTab Custom Element
 
@@ -38,8 +38,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     _createClass(PfTab, [{
       key: 'attachedCallback',
       value: function attachedCallback() {
-        this.createShadowRoot();
-        this.shadowRoot.appendChild(document.importNode(panelTemplate.content, true));
+        // this.createShadowRoot();
+        // this.shadowRoot.appendChild(
+        //   document.importNode(panelTemplate.content, true)
+        // );
+        this.appendChild(document.importNode(panelTemplate.content, true));
       }
     }, {
       key: 'attributeChangedCallback',
@@ -99,12 +102,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     }, {
       key: 'attachedCallback',
       value: function attachedCallback() {
-        this.createShadowRoot();
-        this.shadowRoot.appendChild(document.importNode(tabsTemplate.content, true));
+        // this.createShadowRoot();
+        // this.shadowRoot.appendChild(
+        // document.importNode(tabsTemplate.content, true);
+        // );
+        this.appendChild(document.importNode(tabsTemplate.content, true));
 
         this.makeTabsFromPfTab();
 
-        this.shadowRoot.querySelector('ul').addEventListener('click', this);
+        // this.shadowRoot.querySelector('ul').addEventListener('click', this);
+        this.querySelector('ul').addEventListener('click', this);
 
         if (!this.mutationObserver) {
           this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));
@@ -114,7 +121,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     }, {
       key: 'detachedCallback',
       value: function detachedCallback() {
-        this.shadowRoot.querySelector('ul').removeEventListener('click', this);
+        // this.shadowRoot.querySelector('ul').removeEventListener('click', this);
+        this.querySelector('ul').removeEventListener('click', this);
       }
     }, {
       key: 'handleEvent',
@@ -138,7 +146,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         });
         if (handlers.length) {
           requestAnimationFrame(function () {
-            var ul = pfTabs.shadowRoot.querySelector('ul');
+            // var ul = pfTabs.shadowRoot.querySelector('ul');
+            var ul = pfTabs.querySelector('ul');
             handlers.forEach(function (notes) {
               var action = notes[0];
               var pfTab = notes[1];
@@ -196,7 +205,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     }, {
       key: 'makeTabsFromPfTab',
       value: function makeTabsFromPfTab() {
-        var ul = this.shadowRoot.querySelector('ul');
+        // var ul = this.shadowRoot.querySelector('ul');
+        var ul = this.querySelector('ul');
         var pfTabs = this.querySelectorAll('pf-tab');
         [].forEach.call(pfTabs, function (pfTab, idx) {
           var tab = this.makeTab(pfTab);
@@ -244,7 +254,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         if (active === this.selected) return;
         this.selected = active;
 
-        var tabs = this.shadowRoot.querySelector('ul').children;
+        // var tabs = this.shadowRoot.querySelector('ul').children;
+        var tabs = this.querySelector('ul').children;
         [].forEach.call(tabs, function (tab) {
           var fn = active === tab ? this.makeActive : this.makeInactive;
           fn.call(this, tab);

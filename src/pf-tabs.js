@@ -5,22 +5,23 @@
   var panelTemplate = doc.querySelector('.panel-template');
   var forEach = Array.prototype.forEach;
 
-  shimStyles(tabsTemplate.content, 'pf-tabs');
-  shimStyles(panelTemplate.content, 'pf-tab');
-
-  function shimStyles(root, name) {
-    if (window.ShadowDOMPolyfill) {
-      WebComponents.ShadowCSS.shimStyling(root, name);
-    }
-  }
+  // shimStyles(tabsTemplate.content, 'pf-tabs');
+  // shimStyles(panelTemplate.content, 'pf-tab');
+  //
+  // function shimStyles(root, name) {
+  //   if (window.ShadowDOMPolyfill) {
+  //     WebComponents.ShadowCSS.shimStyling(root, name);
+  //   }
+  // }
 
   //PfTab Custom Element
   class PfTab extends HTMLElement {
     attachedCallback() {
-      this.createShadowRoot();
-      this.shadowRoot.appendChild(
-        document.importNode(panelTemplate.content, true)
-      );
+      // this.createShadowRoot();
+      // this.shadowRoot.appendChild(
+      //   document.importNode(panelTemplate.content, true)
+      // );
+      this.appendChild(document.importNode(panelTemplate.content, true));
     }
 
     attributeChangedCallback(attributeName, oldValue, newValue) {
@@ -63,14 +64,16 @@
     }
 
     attachedCallback() {
-      this.createShadowRoot();
-      this.shadowRoot.appendChild(
-        document.importNode(tabsTemplate.content, true)
-      );
+      // this.createShadowRoot();
+      // this.shadowRoot.appendChild(
+      // document.importNode(tabsTemplate.content, true);
+      // );
+      this.appendChild(document.importNode(tabsTemplate.content, true));
 
       this.makeTabsFromPfTab();
 
-      this.shadowRoot.querySelector('ul').addEventListener('click', this);
+      // this.shadowRoot.querySelector('ul').addEventListener('click', this);
+      this.querySelector('ul').addEventListener('click', this);
 
       if(!this.mutationObserver) {
         this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));
@@ -79,7 +82,8 @@
     }
 
     detachedCallback() {
-      this.shadowRoot.querySelector('ul').removeEventListener('click', this);
+      // this.shadowRoot.querySelector('ul').removeEventListener('click', this);
+      this.querySelector('ul').removeEventListener('click', this);
     }
 
     handleEvent(ev) {
@@ -101,7 +105,8 @@
       });
       if(handlers.length) {
         requestAnimationFrame(function(){
-          var ul = pfTabs.shadowRoot.querySelector('ul');
+          // var ul = pfTabs.shadowRoot.querySelector('ul');
+          var ul = pfTabs.querySelector('ul');
           handlers.forEach(function(notes){
             var action = notes[0];
             var pfTab = notes[1];
@@ -157,7 +162,8 @@
     }
 
     makeTabsFromPfTab() {
-      var ul = this.shadowRoot.querySelector('ul');
+      // var ul = this.shadowRoot.querySelector('ul');
+      var ul = this.querySelector('ul');
       var pfTabs = this.querySelectorAll('pf-tab');
       [].forEach.call(pfTabs, function(pfTab, idx){
         var tab = this.makeTab(pfTab);
@@ -201,7 +207,8 @@
       if(active === this.selected) return;
       this.selected = active;
 
-      var tabs = this.shadowRoot.querySelector('ul').children;
+      // var tabs = this.shadowRoot.querySelector('ul').children;
+      var tabs = this.querySelector('ul').children;
       [].forEach.call(tabs, function(tab){
         var fn = active === tab ? this.makeActive : this.makeInactive;
         fn.call(this, tab);

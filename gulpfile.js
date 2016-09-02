@@ -62,8 +62,7 @@ gulp.task('serve', function(){
     }
   });
 
-  gulp.watch('src/*.scss', ['css']);
-  gulp.watch('src/*.js', ['js']);
-  gulp.watch('src/*.html', ['html', 'vulcanize']);
+  gulp.watch('src/*.js', ['build']);
+  gulp.watch('src/*.html', ['build']);
   gulp.watch("dist/**/*").on('change', browserSync.reload);
 });
