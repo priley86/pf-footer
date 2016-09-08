@@ -26,7 +26,7 @@
 
     attributeChangedCallback(attributeName, oldValue, newValue) {
       var parent = this.parentNode;
-      if(attributeName === 'title') {
+      if(attributeName === 'title' && parent && parent.handleTitle) {
         parent.handleTitle(this, newValue);
       }
     }
@@ -183,7 +183,9 @@
       var frag = document.importNode(tabTemplate.content, true);
       var tab = frag.firstElementChild;
       var tabAnchor = tab.firstElementChild;
-      tabAnchor.innerHTML = pfTab.title;
+      //React gives us a node with attributes, Angular adds it as a property
+      tabAnchor.innerHTML = pfTab.attributes && pfTab.attributes.title ?
+        pfTab.attributes.title.value : pfTab.title;
       this.displayMap.set(pfTab, pfTab.style.display);
       return tab;
     }
