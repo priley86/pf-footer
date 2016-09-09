@@ -1,5 +1,5 @@
 <!-- Tabs Template --><html><head><meta charset="UTF-8"><template class="tabs-template">
-    <ul class="nav nav-tabs" role="tablist"></ul>
+    <ul role="tablist"></ul>
     <div>
         <content></content>
     </div>
@@ -19,7 +19,7 @@
     </div>
 </template>
 
-<script src="pf-tabs.js">'use strict';
+<script>'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -133,6 +133,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
         // this.shadowRoot.querySelector('ul').addEventListener('click', this);
         this.querySelector('ul').addEventListener('click', this);
+
+        //add the ul class if specified
+        this.querySelector('ul').className = this.attributes.class ? this.attributes.class.value : 'nav nav-tabs';
 
         if (!this.mutationObserver) {
           this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));

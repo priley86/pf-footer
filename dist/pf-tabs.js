@@ -113,6 +113,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         // this.shadowRoot.querySelector('ul').addEventListener('click', this);
         this.querySelector('ul').addEventListener('click', this);
 
+        //add the ul class if specified
+        this.querySelector('ul').className = this.attributes.class ? this.attributes.class.value : 'nav nav-tabs';
+
         if (!this.mutationObserver) {
           this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));
           this.mutationObserver.observe(this, { childList: true });
