@@ -81,7 +81,7 @@
 
       if(!this.mutationObserver) {
         this.mutationObserver = new MutationObserver(this.handleMutations.bind(this));
-        this.mutationObserver.observe(this, { childList: true });
+        this.mutationObserver.observe(this, { childList: true, attributes: true });
       }
     }
 
@@ -96,16 +96,29 @@
       }
     }
 
+    attributeChangedCallback(attrName, oldVal, newVal){
+      if(attrName === 'class'){
+        this.querySelector('ul').className = newVal;
+      }
+    }
+
     handleMutations(mutations) {
       var pfTabs = this;
       var handlers = [];
       mutations.forEach(function(mutationRecord){
-        forEach.call(mutationRecord.addedNodes, function(node){
-          handlers.push(['add', node]);
-        });
-        forEach.call(mutationRecord.removedNodes, function(node){
-          handlers.push(['remove', node]);
-        });
+        //child dom nodes have been added
+        if ( mutationRecord.type == 'childList' ) {
+          forEach.call(mutationRecord.addedNodes, function(node){
+            handlers.push(['add', node]);
+          });
+          forEach.call(mutationRecord.removedNodes, function(node){
+            handlers.push(['remove', node]);
+          });
+        }  else if (mutationRecord.type == 'attributes') {
+          //mutationRecord.attributeName contains changed attributes
+          //note: we can ignore this for attributes as the v1 spec of custom
+          //elements already provides attributeChangedCallback
+        }
       });
       if(handlers.length) {
         requestAnimationFrame(function(){
