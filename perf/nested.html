@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <title>Basic Pf-Tabs Demo</title>
+  <script src="../dist/webcomponents.js"></script>
+  <script defer src="perf.js"></script>
+  <script defer>
+  window.onload = function() {
+    console.time('total');
+    var previous = document.body;
+    for (var i = 0; i <= 1000; i++) {
+      var tabs = perf.createTab();
+      previous.appendChild(tabs);
+      // tabs.offsetWidth; // trigger a paint of the new tabs
+      previous = tabs.querySelector('pf-tab');
+    }
+    console.timeEnd('total');
+  }
+  </script>
+
+  <link rel="stylesheet" href="../dist/css/patternfly.css">
+  <link rel="stylesheet" href="../dist/css/patternfly-additions.css">
+  <link rel="import" href="../dist/pf-tabs.html">
+
+</head>
+<body>
+  <h1>Nested tabs</h1>
+  <p>1000 nested tabs</p>
+</body>
+</html>
