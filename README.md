@@ -17,14 +17,14 @@ Reference `pf-tabs` in your DOM (or JSX):
 
 ```
 <pf-tabs class="nav nav-tabs">
-    <pf-tab title="Dashboard" active="true">
-        <app-cards></app-cards>
+    <pf-tab title="Tab 1" active="true">
+        <p>tab 1 content</p>
     </pf-tab>
-    <pf-tab title="List View">
-        <app-list-view></app-list-view>
+    <pf-tab title="Tab 2">
+        <p>tab 2 content</p>
     </pf-tab>
-    <pf-tab title="Empty State">
-        <app-empty-state></app-empty-state>
+    <pf-tab title="Tab 3">
+        <p>tab 3 content</p>
     </pf-tab>
 </pf-tabs>
 ```
