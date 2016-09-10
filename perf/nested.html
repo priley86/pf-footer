@@ -6,15 +6,20 @@
   <script defer src="perf.js"></script>
   <script defer>
   window.onload = function() {
-    console.time('total');
+    var start = performance.now();
     var previous = document.body;
-    for (var i = 0; i <= 1000; i++) {
+    var url = window.location.search;
+    var max = url.replace("?", '') || 10;
+    console.log('Creating', max, 'tabs');
+    for (var i = 0; i <= max; i++) {
       var tabs = perf.createTab();
       previous.appendChild(tabs);
       // tabs.offsetWidth; // trigger a paint of the new tabs
       previous = tabs.querySelector('pf-tab');
     }
-    console.timeEnd('total');
+    document.body.offsetWidth; // trigger a paint
+    var end = performance.now();
+    console.log('Total execution time', end - start, 'ms');
   }
   </script>
 
@@ -25,6 +30,5 @@
 </head>
 <body>
   <h1>Nested tabs</h1>
-  <p>1000 nested tabs</p>
 </body>
 </html>
