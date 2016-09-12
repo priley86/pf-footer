@@ -31,7 +31,7 @@ gulp.task('css', function () {
 
 gulp.task('vulcanize', ['html'], function () {
   return gulp.src('dist/pf-tabs.local.html')
-    .pipe($.vulcanize({dest: 'dist', inline: true}))
+    .pipe($.vulcanize({dest: 'dist', inlineScripts: true, inlineCss: true}))
     .pipe($.rename('pf-tabs.html'))
     .pipe(gulp.dest('dist'));
 });
