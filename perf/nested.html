@@ -19,7 +19,10 @@
     }
     document.body.offsetWidth; // trigger a paint
     var end = performance.now();
-    console.log('Total execution time', end - start, 'ms');
+    var results = end - start;
+    results = results.toFixed(2);
+    console.log('Total execution time', results, 'ms');
+    document.querySelector('.results').innerText = results + ' ms';
   }
   </script>
 
@@ -30,5 +33,6 @@
 </head>
 <body>
   <h1>Nested tabs</h1>
+  <h2>Execution time: <span class="results"></span></h2>
 </body>
 </html>
