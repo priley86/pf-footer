@@ -13,6 +13,7 @@
     contents.classList.add('tab-content');
 
     var tab1 = document.createElement('li');
+    tab1.classList.add('active');
     var link1 = document.createElement('a');
     link1.innerText = 'Tab 1';
     link1.setAttribute('role', 'tab');
