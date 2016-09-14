@@ -2,20 +2,19 @@
 <html>
 <head>
   <title>Basic Pf-Tabs Demo</title>
-  <script src="../dist/webcomponents.js"></script>
-  <script defer src="perf.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script defer src="reference.js"></script>
   <script defer>
   window.onload = function() {
     var start = performance.now();
-    var previous = document.body;
     var url = window.location.search;
     var max = url.replace("?", '') || 10;
     console.log('Creating', max, 'tabs');
     for (var i = 0; i <= max; i++) {
       var tabs = perf.createTab();
-      previous.appendChild(tabs);
+      document.body.appendChild(tabs);
       // tabs.offsetWidth; // trigger a paint of the new tabs
-      previous = tabs.querySelector('pf-tab');
     }
     document.body.offsetWidth; // trigger a paint
     var end = performance.now();
@@ -28,11 +27,10 @@
 
   <link rel="stylesheet" href="../dist/css/patternfly.css">
   <link rel="stylesheet" href="../dist/css/patternfly-additions.css">
-  <link rel="import" href="../dist/pf-tabs.html">
 
 </head>
 <body>
-  <h1>Nested tabs</h1>
+  <h1>Adjacent tabs</h1>
   <h2>Execution time: <span class="results"></span></h2>
 </body>
 </html>
