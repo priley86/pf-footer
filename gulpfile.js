@@ -3,20 +3,17 @@ var gulp = require('gulp'),
   $ = require('gulp-load-plugins')();
 
 gulp.task('js', function () {
-  return gulp.src([
-    'src/pf-tabs.js'
-  ])
+  return gulp.src(['src/pf-footer.js'])
     .pipe($.plumber())
     .pipe($.babel(
       {presets: ['es2015']}
     ))
-    // .pipe($.uglify())
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('html', function () {
-  return gulp.src('src/pf-tabs.html')
-    .pipe($.rename('pf-tabs.local.html'))
+  return gulp.src('src/pf-footer.html')
+    .pipe($.rename('pf-footer.local.html'))
     .pipe(gulp.dest('dist'));
 });
 
@@ -30,9 +27,9 @@ gulp.task('css', function () {
 });
 
 gulp.task('vulcanize', ['html'], function () {
-  return gulp.src('dist/pf-tabs.local.html')
+  return gulp.src('dist/pf-footer.local.html')
     .pipe($.vulcanize({dest: 'dist', inlineScripts: true, inlineCss: true}))
-    .pipe($.rename('pf-tabs.html'))
+    .pipe($.rename('pf-footer.html'))
     .pipe(gulp.dest('dist'));
 });
 
